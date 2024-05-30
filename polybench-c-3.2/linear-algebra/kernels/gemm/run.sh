@@ -3,6 +3,9 @@
 set -e
 set -x
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+OUTPUT_FILE="$SCRIPT_DIR/results.$(date -Iseconds).out"
+
 LLVM_INSTALL_DIR=/usr/WS1/ivanov2/opt/input-gen-release/
 LLVM_SRC_DIR=/usr/WS1/ivanov2/src/input-gen/
 INPUT_GEN_RUNTIME="${INPUT_GEN_RUNTIME:=$(readlink -f "$LLVM_SRC_DIR/input-gen-runtimes/rt-input-gen.cpp")}"
@@ -22,7 +25,8 @@ input-gen gemm.bc --output-dir "$OUTDIR" --input-run-runtime "$INPUT_RUN_RUNTIME
 
 INPUTS_DIR="./$OUTDIR/inputs/"
 mkdir -p "$INPUTS_DIR"
-INPUT_GEN_DISABLE_BRANCH_HINTS=1 TIMING=1 "$OUTDIR/input-gen.function.kernel_gemm.generate.a.out" "$INPUTS_DIR" 0 1
-TIMING=1 "$OUTDIR/input-gen.function.kernel_gemm.run.a.out" "$INPUTS_DIR/input-gen.function.kernel_gemm.generate.a.out.input.0.bin"
+echo -n > "$OUTPUT_FILE"
+INPUT_GEN_DISABLE_BRANCH_HINTS=1 TIMING=1 "$OUTDIR/input-gen.function.kernel_gemm.generate.a.out" "$INPUTS_DIR" 0 1 >> "$OUTPUT_FILE"
+TIMING=1 "$OUTDIR/input-gen.function.kernel_gemm.run.a.out" "$INPUTS_DIR/input-gen.function.kernel_gemm.generate.a.out.input.0.bin" >> "$OUTPUT_FILE"
 
-echo Input binary size "$(wc -c < "$INPUTS_DIR/input-gen.function.kernel_gemm.generate.a.out.input.0.bin")"
+echo Input binary size "$(wc -c < "$INPUTS_DIR/input-gen.function.kernel_gemm.generate.a.out.input.0.bin")" >> "$OUTPUT_FILE"
