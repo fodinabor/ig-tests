@@ -62,7 +62,6 @@ void print_array(int ni, int nj,
 
 /* Main computational kernel. The whole function will be timed,
    including the call and return. */
-static
 void kernel_gemm(int ni, int nj, int nk,
 		 DATA_TYPE alpha,
 		 DATA_TYPE beta,
@@ -82,6 +81,8 @@ void kernel_gemm(int ni, int nj, int nk,
 	  C[i][j] += alpha * A[i][k] * B[k][j];
       }
 #pragma endscop
+
+  printf("IJK %d %d %d\n", ni, nj, nk);
 
 }
 
