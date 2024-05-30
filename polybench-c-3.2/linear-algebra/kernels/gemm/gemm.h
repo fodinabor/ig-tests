@@ -29,9 +29,9 @@
 #  endif
 
 #  ifdef STANDARD_DATASET /* Default if unspecified. */
-#   define NI 1024
-#   define NJ 1024
-#   define NK 1024
+#   define NI 141
+#   define NJ 152
+#   define NK 183
 #  endif
 
 #  ifdef LARGE_DATASET
