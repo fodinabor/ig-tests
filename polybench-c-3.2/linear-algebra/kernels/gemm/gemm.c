@@ -55,18 +55,16 @@ static void print_array(int ni, int nj,
 
 /* Main computational kernel. The whole function will be timed,
    including the call and return. */
-void kernel_gemm(int ni, int nj, int nk, double alpha, double beta,
+void kernel_gemm(int ni, int nj, int nk, double a,
                  double *C, double *A, double *B) {
   int i, j, k;
-
-  /* C := alpha*A*B + beta*C */
-  for (i = 0; i < ni; i++)
+  for (i = 0; i < ni; i++) {
     for (j = 0; j < nj; j++) {
-      C[i * nj + j] *= beta;
+      C[i * nj + j] = 0;
       for (k = 0; k < nk; k++) {
-        C[i * nj + j] += alpha * A[i * nk + k] * B[k * nj + j];
+        C[i * nj + j] += a * A[i * nk + k] * B[k * nj + j];
       }
     }
-
+  }
   printf("IJK %d %d %d\n", ni, nj, nk);
 }
