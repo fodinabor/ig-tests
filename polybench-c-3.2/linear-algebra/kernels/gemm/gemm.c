@@ -56,7 +56,7 @@ static void print_array(int ni, int nj,
 /* Main computational kernel. The whole function will be timed,
    including the call and return. */
 void kernel_gemm(int ni, int nj, int nk, double a,
-                 double *C, double *A, double *B) {
+                 double *restrict C, double *restrict A, double *restrict B) {
   int i, j, k;
   for (i = 0; i < ni; i++) {
     for (j = 0; j < nj; j++) {
